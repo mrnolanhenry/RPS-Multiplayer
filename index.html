@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+        var config = {
+            apiKey: "AIzaSyANAZCnsHmCbiKrsWc4rDNId316NW3WbY4",
+            authDomain: "rps-multiplayer-e8c4.firebaseapp.com",
+            databaseURL: "https://rps-multiplayer-e8c4.firebaseio.com",
+            projectId: "rps-multiplayer-e8c4",
+            storageBucket: "rps-multiplayer-e8c47.appspot.com/",
+            // messagingSenderId: "<SENDER_ID>",
+        };
+        firebase.initializeApp(config);
+    </script>
+</head>
+
+<body>
+
+    <div class='container'>
+        <div class='row'>
+            <div class='col-12'>
+                <h4>Rock, Paper, Scissors, Shoot!</h4>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-6'>
+                <form class='player-input-form'>
+                    <label for='player-input'>Player 1</label>
+                    <input type="password" class='player-input' minlength='1' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'">
+                    <button type="submit" id='player1' class="shootBtn">Shoot!</button>
+                </form>
+            </div>
+            <div class='col-6'>
+                <form class='player-input-form'>
+                    <label for='player-input'>Player 2</label>
+                    <input type="password" class='player-input' minlength='1' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'">
+                    <button type="submit" id='player2' class="shootBtn">Shoot!</button>
+                </form>
+            </div>
+        </div>
+        <div class='row row-scoreboard'>
+                <div class='col-12 col-scoreboard'>
+                </div>
+            </div>
+        <div class='row row-results'>
+            <div class='col-12 col-results'>
+            </div>
+        </div>
+        <div class='row row-hands'>
+            <div class='col-6 col-left-hand'>
+            </div>
+            <div class='col-6 col-right-hand'>
+            </div>
+        </div>
+
+    </div>
+    <script src="assets/javascript/app.js"></script>
+</body>
+
+</html>
