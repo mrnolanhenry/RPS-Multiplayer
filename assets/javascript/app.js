@@ -53,9 +53,8 @@ $(document).ready(function () {
 
         // clear input entered
         $(this).parent('form').find('.player-input').val('');
-        consoleLogPlayerData();
+        // consoleLogPlayerData();
     });
-
 
     function identifyPlayer(button) {
         let playerIdentified;
@@ -90,13 +89,21 @@ $(document).ready(function () {
         return isComplete;
     }
 
+    // checks if both players entered correct input
+    // IF NOT: also displays which players entered invalid input
     function areInputsValid() {
+        let mistakenPlayers = [];
         let areInputsValid = true;
         players.forEach(function (player) {
             if (player.currentIndex === -1) {
                 areInputsValid = false;
+                mistakenPlayers.push(player);
+                $('.col-results').empty();
             }
         })
+        for (let i = 0; i < mistakenPlayers.length; i++) {
+            $('.col-results').append(mistakenPlayers[i].name + ' entered ' + mistakenPlayers[i].currentChoice + '. ');
+        }
         return areInputsValid;
     }
 
@@ -120,15 +127,15 @@ $(document).ready(function () {
                 var imgArray = images.right;
             }
             let newImage = $('<img>');
-            newImage.attr('src',imgArray[player.currentIndex]);
+            newImage.attr('src', imgArray[player.currentIndex]);
             column.html(newImage);
         })
     }
 
-    function updateScoreboard(){
+    function updateScoreboard() {
         $('.col-scoreboard').html(player1.name + ' Wins: ' + score.player1Wins + '<br />' +
-        player2.name + ' Wins: ' + score.player2Wins + '<br />' +
-        'Ties: ' + score.ties)
+            player2.name + ' Wins: ' + score.player2Wins + '<br />' +
+            'Ties: ' + score.ties)
     }
 
     function determineWinner() {
@@ -140,15 +147,15 @@ $(document).ready(function () {
         }
 
         if (player1.currentIndex < player2.currentIndex) {
-            $('.col-results').html(player1.name + ' selected ' + player1.currentChoiceLong + '. ' + player2.name + ' selected ' + player2.currentChoiceLong + '. ' + player2.name + ' wins!')
+            $('.col-results').html(player1.name + ' selected ' + player1.currentChoiceLong + '. <br/>' + player2.name + ' selected ' + player2.currentChoiceLong + '. <br/>' + player2.name + ' wins!')
             score.player2Wins++;
         }
         else if (player1.currentIndex === player2.currentIndex) {
-            $('.col-results').html(player1.name +' selected ' + player1.currentChoiceLong + '. ' + player2.name + ' selected ' + player2.currentChoiceLong + '. Tie!')
+            $('.col-results').html(player1.name + ' selected ' + player1.currentChoiceLong + '. <br/>' + player2.name + ' selected ' + player2.currentChoiceLong + '. <br/>Tie!')
             score.ties++;
         }
         else {
-            $('.col-results').html(player1.name + ' selected ' + player1.currentChoiceLong + '. ' + player2.name + ' selected ' + player2.currentChoiceLong + '. ' + player1.name + ' wins!')
+            $('.col-results').html(player1.name + ' selected ' + player1.currentChoiceLong + '. <br/>' + player2.name + ' selected ' + player2.currentChoiceLong + '. <br/>' + player1.name + ' wins!')
             score.player1Wins++;
         }
     }

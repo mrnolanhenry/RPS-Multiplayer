@@ -2,6 +2,74 @@
     box-sizing: border-box;
 }
 
-div {
+body {
+    background-image: url('../images/bg/gravel.png');
+}
+
+/* div {
     border: 1px solid black;
+} */
+
+button {
+    background-color: #2eb36a;
+    color:white;
+}
+
+h4 {
+    color:  #2eb36a;
+}
+
+.shootBtn {
+    border-width: 0px;
+    width:100%;
+}
+
+.player-input-form {
+    flex-direction: column;
+    justify-content: center !important;
+    align-content: center !important;
+    justify-items: center !important;
+    align-items: center !important;
+    margin: 0px 5px 0px 5px;
+}
+
+.row-center, .col-center {
+    justify-content: center !important;
+    align-content: center !important;
+    justify-items: center !important;
+    align-items: center !important;
+}
+.col-left-hand {
+    justify-content: left;
+    justify-items: left;
+}
+
+.col-right {
+    display: flex;
+    justify-content: flex-end;
+    justify-items: right;
+    align-content: right;
+    align-items: right;
+}
+
+.col-message {
+    display: flex;
+    flex-direction:column;
+    justify-content: space-around;
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+    .col,
+    [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+.col-results, 
+.col-scoreboard {
+    text-align: center;
+    z-index:2;
 }

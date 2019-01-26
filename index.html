@@ -28,40 +28,38 @@
 
 <body>
 
-    <div class='container'>
-        <div class='row'>
-            <div class='col-12'>
-                <h4>Rock, Paper, Scissors, Shoot!</h4>
-            </div>
+    <div class='container-fluid'>
+        <div class='row row-center'>
+            <h4>Rock, Paper, Scissors, Shoot!</h4>
         </div>
-        <div class='row'>
-            <div class='col-6'>
-                <form class='player-input-form'>
-                    <label for='player-input'>Player 1</label>
-                    <input type="password" class='player-input' minlength='1' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'">
-                    <button type="submit" id='player1' class="shootBtn">Shoot!</button>
-                </form>
-            </div>
-            <div class='col-6'>
-                <form class='player-input-form'>
-                    <label for='player-input'>Player 2</label>
-                    <input type="password" class='player-input' minlength='1' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'">
-                    <button type="submit" id='player2' class="shootBtn">Shoot!</button>
-                </form>
-            </div>
+        <div class='row row-center'>
+            <form class='player-input-form form-inline'>
+                <label for='player-input'>Player 1</label>
+                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
+                <button type="submit" id='player1' class="shootBtn">Shoot!</button>
+            </form>
+            <form class='player-input-form form-inline'>
+                <label for='player-input'>Player 2</label>
+                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
+                <button type="submit" id='player2' class="shootBtn">Shoot!</button>
+            </form>
+
         </div>
-        <div class='row row-scoreboard'>
-                <div class='col-12 col-scoreboard'>
+
+        <div class='row row-hands'>
+            <div class='col-4 col-left-hand'>
+            </div>
+            <div class='col-4 col-message'>
+                <div class='row row-results'>
+                    <div class='col col-results'>
+                    </div>
+                </div>
+                <div class='row row-scoreboard'>
+                    <div class='col col-scoreboard'>
+                    </div>
                 </div>
             </div>
-        <div class='row row-results'>
-            <div class='col-12 col-results'>
-            </div>
-        </div>
-        <div class='row row-hands'>
-            <div class='col-6 col-left-hand'>
-            </div>
-            <div class='col-6 col-right-hand'>
+            <div class='col-4 col-right col-right-hand'>
             </div>
         </div>
 
