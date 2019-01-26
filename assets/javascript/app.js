@@ -34,12 +34,15 @@ $(document).ready(function () {
 
     let players = [player1, player2]
 
+    $('.col-message').hide();
+
     $(document).on('click', '.shootBtn', function () {
         event.preventDefault();
         let currentPlayer = identifyPlayer($(this));
         let currentInput = $(this).parent('form').find('.player-input').val().toLowerCase();
         updatePlayerChoice(currentPlayer, currentInput);
         if (isRoundComplete()) {
+            $('.col-message').show();
             if (areInputsValid()) {
                 displayHands();
                 determineWinner();

@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
 }
 
 body {
@@ -11,12 +12,12 @@ body {
 } */
 
 button {
-    background-color: #2eb36a;
+    background-color: rgba(46,179,106,1);
     color:white;
 }
 
 h4 {
-    color:  #2eb36a;
+    color:  rgba(46,179,106,1);
 }
 
 .shootBtn {
@@ -52,10 +53,23 @@ h4 {
     align-items: right;
 }
 
+.row-hands {
+    margin-top:15px;
+    justify-content:space-between;
+}
+
 .col-message {
     display: flex;
     flex-direction:column;
     justify-content: space-around;
+    background-color: rgba(46,179,106,0.5);
+    /* color:white; */
+    border:solid;
+    border-radius: 50px;
+    border-color: rgba(46,179,106,0.3);
+    z-index:2;
+
+
 }
 
 .no-gutters {
