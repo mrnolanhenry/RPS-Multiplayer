@@ -165,6 +165,7 @@ $(document).ready(function () {
         let msg = $('<div>')
         msg.html('<b>' + currentPlayerName + ': </b>' + msgText + '<br>');
         $('.panel-body').append(msg);
+        // $('.panel-body').scrollTop = $('.panel-body').scrollHeight;
     });
 
     database.ref('/newRound/newRound').on("value", function (snapshot) {
@@ -196,6 +197,7 @@ $(document).ready(function () {
             message: $('.chat-input').val(),
             playerName: thisPlayer.name
         });
+        $('.chat-input').val('')
     });
 
     $(document).on('click', '.checkInBtn', function () {
