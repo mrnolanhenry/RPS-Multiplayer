@@ -17,30 +17,18 @@
 <body>
 
     <div class='container-fluid'>
-        <div class='row row-center'>
-            <h4>Rock, Paper, Scissors, Shoot!</h4>
+        <div class='row row-center row-header'>
         </div>
         <div class='row row-center'>
             <h6 class='players-online'></h6>
         </div>
-        <div class='row row-center'>
-            <form class='name-input-form form-inline'>
-                <input type="text" class='name-input' placeholder="Enter your name:" size='13'>
-                <button class="checkInBtn">Check In</button>
-            </form>
-
-            <form class='player-input-form form-inline'>
-                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
-                <button class="shootBtn">Shoot!</button>
-            </form>
-
-            <button class="nextRoundBtn">New Round</button>
+        <div class='row row-center row-buttons'>
         </div>
         <div class='row row-center'>
-            <h6 id='wait-message'>Waiting for other player's choice...</h6>
+            <h6 id='wait-message'></h6>
         </div>
         <div class='row row-center'>
-            <h6 id='error-message'>You entered something other than 'r,' 'p,' or 's.'</h6>
+            <h6 id='error-message'></h6>
         </div>
 
         <div class='row row-hands'>

@@ -53,6 +53,48 @@ $(document).ready(function () {
     var isConnectedRef = database.ref(".info/connected");
     let newRoundRef = database.ref('/newRound');
 
+    // CREATE HEADER AND ADD IT TO ROW-HEADER
+    let header = $('<h4>');
+    header.text('Rock, Paper, Scissors, Shoot!');
+    $('.row-header').append(header);
+
+    // CREATE NAME-INPUT-FORM AND ADD TO ROW-BUTTONS
+    let nameInputForm = $('<form>');
+    let nameInput = $('<input>');
+    let checkInBtn = $('<button>');
+    nameInputForm.attr('class', 'name-input-form form-inline');
+    nameInput.attr('type', 'text');
+    nameInput.attr('class', 'name-input');
+    nameInput.attr('placeholder', 'Enter your name:');
+    nameInput.attr('size', '13');
+    checkInBtn.attr('class', 'checkInBtn');
+    checkInBtn.text('Check In');
+    nameInputForm.append(nameInput);
+    nameInputForm.append(checkInBtn);
+    $('.row-buttons').append(nameInputForm);
+
+    // CREATE PLAYER-INPUT-FORM AND ADD TO ROW-BUTTONS
+    let playerInputForm = $('<form>');
+    let playerInput = $('<input>');
+    let shootBtn = $('<button>');
+    playerInputForm.attr('class', 'player-input-form form-inline');
+    playerInput.attr('type', 'password');
+    playerInput.attr('class', 'player-input');
+    playerInput.attr('maxlength', '1');
+    playerInput.attr('placeholder', "Enter 'r,' 'p,' or 's'");
+    playerInput.attr('size', '13');
+    shootBtn.attr('class', 'shootBtn');
+    shootBtn.text('Shoot!');
+    playerInputForm.append(playerInput);
+    playerInputForm.append(shootBtn);
+    $('.row-buttons').append(playerInputForm);
+
+    // CREATE NEXTROUNDBTN AND ADD TO ROW-BUTTONS
+    let nextRoundBtn = $('<button>');
+    nextRoundBtn.attr('class', 'nextRoundBtn');
+    nextRoundBtn.text('New Round');
+    $('.row-buttons').append(nextRoundBtn);
+
 
     checkInRef.onDisconnect().remove();
     playersRef.onDisconnect().remove();
@@ -63,6 +105,9 @@ $(document).ready(function () {
     $('.player-input-form').hide();
     $('.row-hands').hide();
     $('.nextRoundBtn').hide();
+
+    $('#wait-message').html("Waiting for other player's choice...");
+    $('#error-message').html("Invalid choice")
 
     isConnectedRef.on('value',
         function (snapshot) {
