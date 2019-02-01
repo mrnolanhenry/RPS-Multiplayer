@@ -60,7 +60,7 @@ $(document).ready(function () {
 
     // CREATE LOGO AND ADD IT TO ROW-HEADER
     let logo = $('<img>');
-    logo.attr('src','assets/images/cfn-logo-simple-300.png');
+    logo.attr('src','assets/images/cfn-logo-simple-255.png');
     $('.row-header').append(logo);
 
     // CREATE NAME-INPUT-FORM AND ADD TO ROW-BUTTONS
