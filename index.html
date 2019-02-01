@@ -11,19 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        // TODO: Replace with your project's customized code snippet
-        var config = {
-            apiKey: "AIzaSyANAZCnsHmCbiKrsWc4rDNId316NW3WbY4",
-            authDomain: "rps-multiplayer-e8c4.firebaseapp.com",
-            databaseURL: "https://rps-multiplayer-e8c4.firebaseio.com",
-            projectId: "rps-multiplayer-e8c4",
-            storageBucket: "rps-multiplayer-e8c47.appspot.com/",
-            // messagingSenderId: "<SENDER_ID>",
-        };
-        firebase.initializeApp(config);
-    </script>
+
 </head>
 
 <body>
@@ -33,17 +21,19 @@
             <h4>Rock, Paper, Scissors, Shoot!</h4>
         </div>
         <div class='row row-center'>
-            <form class='player-input-form form-inline'>
-                <label for='player-input'>Player 1</label>
-                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
-                <button type="submit" id='player1' class="shootBtn">Shoot!</button>
-            </form>
-            <form class='player-input-form form-inline'>
-                <label for='player-input'>Player 2</label>
-                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
-                <button type="submit" id='player2' class="shootBtn">Shoot!</button>
+            <h6 class='players-online'></h6>
+        </div>
+        <div class='row row-center'>
+            <form class='name-input-form form-inline'>
+                <input type="text" class='name-input' placeholder="Enter your name:" size='13'>
+                <button class="checkInBtn">Check In</button>
             </form>
 
+            <form class='player-input-form form-inline'>
+                <input type="password" class='player-input' maxlength='1' placeholder="Enter 'r,' 'p,' or 's'" size='13'>
+                <button class="shootBtn">Shoot!</button>
+            </form>
+            <button class = "nextRoundBtn">New Round</button>
         </div>
 
         <div class='row row-hands'>

@@ -33,35 +33,125 @@ $(document).ready(function () {
     }
 
     let players = [player1, player2]
+    let numCheckedIn = 0;
+    let newRound = false;
 
+    var config = {
+        apiKey: "AIzaSyBagC44uS0SlZXznaRgFHHgGmooXxsQzPs",
+        authDomain: "rps-multiplayer-c4da2.firebaseapp.com",
+        databaseURL: "https://rps-multiplayer-c4da2.firebaseio.com",
+        projectId: "rps-multiplayer-c4da2",
+        storageBucket: "rps-multiplayer-c4da2.appspot.com",
+        messagingSenderId: "829850759826"
+    };
+    firebase.initializeApp(config);
+
+    let database = firebase.database();
+    let connectionsRef = database.ref('/connections');
+    let playersRef = database.ref('/players');
+    var checkInRef = database.ref('/checkedIn')
+    var isConnectedRef = database.ref(".info/connected");
+
+
+    checkInRef.onDisconnect().remove();
+    playersRef.onDisconnect().remove();
+
+    $('.player-input-form').hide();
     $('.col-message').hide();
+    $('.nextRoundBtn').hide();
 
-    $(document).on('click', '.shootBtn', function () {
-        event.preventDefault();
-        let currentPlayer = identifyPlayer($(this));
-        let currentInput = $(this).parent('form').find('.player-input').val().toLowerCase();
-        updatePlayerChoice(currentPlayer, currentInput);
+    isConnectedRef.on('value',
+        function (snapshot) {
+            if (snapshot.val()) {
+                var thoseConnected = connectionsRef.push(true);
+                thoseConnected.onDisconnect().remove();
+                // console.log(connectionsRef, isConnectedRef)
+            }
+        })
+
+    // Number of online users is the number of objects in the presence list.
+    // When first loaded or when the connections list changes...
+    connectionsRef.on("value", function (snapshot) {
+        // console.log('numChildren', snapshot.numChildren());
+        // The number of online users is the number of children in the connections list.
+        $('.players-online').html(snapshot.numChildren() + ' players online');
+    });
+
+
+    database.ref("/players").on("value", function (snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+
+        let currentPlayer = identifyPlayer(childSnapshot.val().id);
+        currentPlayer.name = childSnapshot.val().name;
+        currentPlayer.id = childSnapshot.val().id;
+        currentPlayer.currentChoice = childSnapshot.val().currentChoice;
+        currentPlayer.currentIndex = childSnapshot.val().currentIndex;
+        currentPlayer.currentChoiceLong = childSnapshot.val().currentChoiceLong;
+        });
+
         if (isRoundComplete()) {
             $('.col-message').show();
             if (areInputsValid()) {
                 displayHands();
                 determineWinner();
                 updateScoreboard();
-                resetPlayerChoices();
             }
-            else {
-                resetPlayerChoices();
-            }
+            $('.player-input-form').hide();
+            $('.nextRoundBtn').show();
         }
 
         // clear input entered
-        $(this).parent('form').find('.player-input').val('');
-        // consoleLogPlayerData();
+        $('.player-input-form').find('.player-input').val('');
+
     });
 
-    function identifyPlayer(button) {
+    database.ref('/checkedIn/checkIns').on("value", function (snapshot) {
+        numCheckedIn = snapshot.val();
+    });
+
+    $(document).on('click', '.nextRoundBtn', function () {
+        newRound = true;
+        resetPlayerChoices();
+        consoleLogPlayerData();
+        $('.col-message').hide();
+        $('.player-input-form').show();
+        $(this).hide();
+    });
+
+    $(document).on('click', '.checkInBtn', function () {
+        event.preventDefault();
+        numCheckedIn++;
+        checkInRef.set({
+            checkIns: numCheckedIn
+        })
+
+        let playerName = $('.name-input-form').find('.name-input').val();
+
+        if (numCheckedIn === 1) {
+            var currentPlayer = player1;
+        }
+        else if (numCheckedIn === 2) {
+            var currentPlayer = player2;
+        }
+
+        currentPlayer.name = playerName;
+        $('.player-input-form').find('.shootBtn').attr('id', currentPlayer.id);
+
+        $('.name-input-form').hide();
+        $('.player-input-form').show();
+
+    });
+
+    $(document).on('click', '.shootBtn', function () {
+        event.preventDefault();
+        let currentPlayer = identifyPlayer($(this).attr('id'));
+        let currentInput = $(this).parent('form').find('.player-input').val().toLowerCase();
+
+        updatePlayerChoice(currentPlayer, currentInput);
+    });
+
+    function identifyPlayer(playerID) {
         let playerIdentified;
-        let playerID = button.attr('id');
         players.forEach(function (player) {
             if (playerID === player.id) {
                 playerIdentified = player;
@@ -74,6 +164,14 @@ $(document).ready(function () {
         player.currentChoice = choice;
         player.currentIndex = choices.indexOf(choice);
         player.currentChoiceLong = choicesLong[player.currentIndex];
+
+        database.ref("/players/" + player.id).set({
+            name: player.name,
+            id: player.id,
+            currentChoice: player.currentChoice,
+            currentIndex: player.currentIndex,
+            currentChoiceLong: player.currentChoiceLong
+        })
     }
 
     function consoleLogPlayerData() {
@@ -116,6 +214,14 @@ $(document).ready(function () {
             player.currentChoiceLong = null;
             player.currentIndex = null;
             player.currentImg = null;
+
+            database.ref("/players/" + player.id).set({
+                name: player.name,
+                id: player.id,
+                currentChoice: player.currentChoice,
+                currentIndex: player.currentIndex,
+                currentChoiceLong: player.currentChoiceLong
+            })
         })
     }
 
