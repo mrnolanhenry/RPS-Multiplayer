@@ -51,13 +51,16 @@ $(document).ready(function () {
     let playersRef = database.ref('/players');
     var checkInRef = database.ref('/checkedIn')
     var isConnectedRef = database.ref(".info/connected");
+    let newRoundRef = database.ref('/newRound');
 
 
     checkInRef.onDisconnect().remove();
     playersRef.onDisconnect().remove();
+    newRoundRef.onDisconnect().remove();
 
+    $('#wait-message').hide();
     $('.player-input-form').hide();
-    $('.col-message').hide();
+    $('.row-hands').hide();
     $('.nextRoundBtn').hide();
 
     isConnectedRef.on('value',
@@ -65,32 +68,31 @@ $(document).ready(function () {
             if (snapshot.val()) {
                 var thoseConnected = connectionsRef.push(true);
                 thoseConnected.onDisconnect().remove();
-                // console.log(connectionsRef, isConnectedRef)
             }
         })
 
     // Number of online users is the number of objects in the presence list.
     // When first loaded or when the connections list changes...
     connectionsRef.on("value", function (snapshot) {
-        // console.log('numChildren', snapshot.numChildren());
         // The number of online users is the number of children in the connections list.
         $('.players-online').html(snapshot.numChildren() + ' players online');
     });
 
 
-    database.ref("/players").on("value", function (snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+    playersRef.on("value", function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
 
-        let currentPlayer = identifyPlayer(childSnapshot.val().id);
-        currentPlayer.name = childSnapshot.val().name;
-        currentPlayer.id = childSnapshot.val().id;
-        currentPlayer.currentChoice = childSnapshot.val().currentChoice;
-        currentPlayer.currentIndex = childSnapshot.val().currentIndex;
-        currentPlayer.currentChoiceLong = childSnapshot.val().currentChoiceLong;
+            let currentPlayer = identifyPlayer(childSnapshot.val().id);
+            currentPlayer.name = childSnapshot.val().name;
+            currentPlayer.id = childSnapshot.val().id;
+            currentPlayer.currentChoice = childSnapshot.val().currentChoice;
+            currentPlayer.currentIndex = childSnapshot.val().currentIndex;
+            currentPlayer.currentChoiceLong = childSnapshot.val().currentChoiceLong;
         });
 
         if (isRoundComplete()) {
-            $('.col-message').show();
+            $('#wait-message').hide();
+            $('.row-hands').show();
             if (areInputsValid()) {
                 displayHands();
                 determineWinner();
@@ -99,6 +101,7 @@ $(document).ready(function () {
             $('.player-input-form').hide();
             $('.nextRoundBtn').show();
         }
+
 
         // clear input entered
         $('.player-input-form').find('.player-input').val('');
@@ -109,13 +112,26 @@ $(document).ready(function () {
         numCheckedIn = snapshot.val();
     });
 
+    database.ref('/newRound/newRound').on("value", function (snapshot) {
+        newRound = snapshot.val();
+        if (newRound) {
+            resetPlayerChoices();
+            consoleLogPlayerData();
+            $('.row-hands').hide();
+            $('.player-input-form').show();
+            $('.nextRoundBtn').hide();
+        }
+        newRound = false;
+        newRoundRef.set({
+            newRound: newRound
+        })
+    });
+
     $(document).on('click', '.nextRoundBtn', function () {
         newRound = true;
-        resetPlayerChoices();
-        consoleLogPlayerData();
-        $('.col-message').hide();
-        $('.player-input-form').show();
-        $(this).hide();
+        newRoundRef.set({
+            newRound: newRound
+        })
     });
 
     $(document).on('click', '.checkInBtn', function () {
@@ -144,6 +160,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.shootBtn', function () {
         event.preventDefault();
+        $('#wait-message').show();
+        
         let currentPlayer = identifyPlayer($(this).attr('id'));
         let currentInput = $(this).parent('form').find('.player-input').val().toLowerCase();
 
@@ -183,7 +201,7 @@ $(document).ready(function () {
     function isRoundComplete() {
         let isComplete = true;
         players.forEach(function (player) {
-            if (player.currentChoice === null) {
+            if (player.currentChoice === null || player.currentChoice === undefined) {
                 isComplete = false;
             }
         })
