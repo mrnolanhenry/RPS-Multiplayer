@@ -70,7 +70,6 @@ $(document).ready(function () {
     nameInputForm.attr('class', 'name-input-form form-inline');
     nameInput.attr('type', 'text');
     nameInput.attr('class', 'name-input');
-    nameInput.attr('minlength', '1');
     nameInput.attr('placeholder', 'Enter your name:');
     nameInput.attr('size', '14');
     checkInBtn.attr('class', 'checkInBtn');
