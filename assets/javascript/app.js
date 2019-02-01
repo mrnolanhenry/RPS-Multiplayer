@@ -58,6 +58,7 @@ $(document).ready(function () {
     playersRef.onDisconnect().remove();
     newRoundRef.onDisconnect().remove();
 
+    $('#error-message').hide();
     $('#wait-message').hide();
     $('.player-input-form').hide();
     $('.row-hands').hide();
@@ -93,11 +94,11 @@ $(document).ready(function () {
         if (isRoundComplete()) {
             $('#wait-message').hide();
             $('.row-hands').show();
-            if (areInputsValid()) {
-                displayHands();
-                determineWinner();
-                updateScoreboard();
-            }
+
+            displayHands();
+            determineWinner();
+            updateScoreboard();
+
             $('.player-input-form').hide();
             $('.nextRoundBtn').show();
         }
@@ -160,13 +161,31 @@ $(document).ready(function () {
 
     $(document).on('click', '.shootBtn', function () {
         event.preventDefault();
-        $('#wait-message').show();
-        
-        let currentPlayer = identifyPlayer($(this).attr('id'));
-        let currentInput = $(this).parent('form').find('.player-input').val().toLowerCase();
 
-        updatePlayerChoice(currentPlayer, currentInput);
+        let currentPlayer = identifyPlayer($('.shootBtn').attr('id'));
+        let currentInput = $('.player-input').val().toLowerCase();
+        if (choices.indexOf(currentInput) !== -1) {
+            $('#error-message').hide();
+            $('#wait-message').show();
+            $('.player-input-form').hide();
+            updatePlayerChoice(currentPlayer, currentInput);
+        }
+        else {
+            $('#error-message').show();
+        }
     });
+
+    // OPTIONAL KEY-PRESS HANDLER INSTEAD OF USING SHOOT BUTTON
+    document.onkeyup = function (event) {
+        let currentInput = event.key.toLowerCase();
+        if (choices.indexOf(currentInput) !== -1 && $('.shootBtn').is(":visible")) {
+            let currentPlayer = identifyPlayer($('.shootBtn').attr('id'));
+            $('#error-message').hide();
+            $('#wait-message').show();
+            $('.player-input-form').hide();
+            updatePlayerChoice(currentPlayer, currentInput);
+        }
+    }
 
     function identifyPlayer(playerID) {
         let playerIdentified;
@@ -206,24 +225,6 @@ $(document).ready(function () {
             }
         })
         return isComplete;
-    }
-
-    // checks if both players entered correct input
-    // IF NOT: also displays which players entered invalid input
-    function areInputsValid() {
-        let mistakenPlayers = [];
-        let areInputsValid = true;
-        players.forEach(function (player) {
-            if (player.currentIndex === -1) {
-                areInputsValid = false;
-                mistakenPlayers.push(player);
-                $('.col-results').empty();
-            }
-        })
-        for (let i = 0; i < mistakenPlayers.length; i++) {
-            $('.col-results').append(mistakenPlayers[i].name + ' entered ' + mistakenPlayers[i].currentChoice + '. ');
-        }
-        return areInputsValid;
     }
 
     function resetPlayerChoices() {
