@@ -33,6 +33,7 @@ $(document).ready(function () {
     }
 
     let players = [player1, player2]
+    var thisPlayer;
     let numCheckedIn = 0;
     let newRound = false;
 
@@ -46,21 +47,17 @@ $(document).ready(function () {
     };
     firebase.initializeApp(config);
 
-    let database = firebase.database();
-    let connectionsRef = database.ref('/connections');
-    let playersRef = database.ref('/players');
+    var database = firebase.database();
+    var connectionsRef = database.ref('/connections');
+    var chatRef = database.ref('/chat');
+    var playersRef = database.ref('/players');
     var checkInRef = database.ref('/checkedIn')
     var isConnectedRef = database.ref(".info/connected");
-    let newRoundRef = database.ref('/newRound');
-
-    // // CREATE HEADER AND ADD IT TO ROW-HEADER
-    // let header = $('<h4>');
-    // header.text('Rock, Paper, Scissors, Shoot!');
-    // $('.row-header').append(header);
+    var newRoundRef = database.ref('/newRound');
 
     // CREATE LOGO AND ADD IT TO ROW-HEADER
     let logo = $('<img>');
-    logo.attr('src','assets/images/cfn-logo-simple-255.png');
+    logo.attr('src', 'assets/images/cfn-logo-simple-255.png');
     $('.row-header').append(logo);
 
     // CREATE NAME-INPUT-FORM AND ADD TO ROW-BUTTONS
@@ -100,19 +97,20 @@ $(document).ready(function () {
     nextRoundBtn.text('New Round');
     $('.row-buttons').append(nextRoundBtn);
 
-
-    checkInRef.onDisconnect().remove();
-    playersRef.onDisconnect().remove();
-    newRoundRef.onDisconnect().remove();
-
     $('#error-message').hide();
     $('#wait-message').hide();
     $('.player-input-form').hide();
     $('.row-hands').hide();
     $('.nextRoundBtn').hide();
+    $('.row-chat').hide();
 
     $('#wait-message').html("Waiting for other player's choice...");
     $('#error-message').html("Invalid choice")
+
+    checkInRef.onDisconnect().remove();
+    playersRef.onDisconnect().remove();
+    newRoundRef.onDisconnect().remove();
+    chatRef.onDisconnect().remove();
 
     isConnectedRef.on('value',
         function (snapshot) {
@@ -128,7 +126,6 @@ $(document).ready(function () {
         // The number of online users is the number of children in the connections list.
         $('.players-online').html(snapshot.numChildren() + ' players online');
     });
-
 
     playersRef.on("value", function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
@@ -153,7 +150,6 @@ $(document).ready(function () {
             $('.nextRoundBtn').show();
         }
 
-
         // clear input entered
         $('.player-input-form').find('.player-input').val('');
 
@@ -161,6 +157,14 @@ $(document).ready(function () {
 
     database.ref('/checkedIn/checkIns').on("value", function (snapshot) {
         numCheckedIn = snapshot.val();
+    });
+
+    database.ref('/chat').on("child_added", function (snapshot) {
+        let msgText = snapshot.child('message').val();
+        let currentPlayerName = snapshot.child('playerName').val();
+        let msg = $('<div>')
+        msg.html('<b>' + currentPlayerName + ': </b>' + msgText + '<br>');
+        $('.panel-body').append(msg);
     });
 
     database.ref('/newRound/newRound').on("value", function (snapshot) {
@@ -185,9 +189,19 @@ $(document).ready(function () {
         })
     });
 
+    $(document).on('click', '.chatBtn', function () {
+        event.preventDefault();
+
+        chatRef.push({
+            message: $('.chat-input').val(),
+            playerName: thisPlayer.name
+        });
+    });
+
     $(document).on('click', '.checkInBtn', function () {
         event.preventDefault();
 
+        $('.row-chat').show();
         $('iframe').hide();
         numCheckedIn++;
         checkInRef.set({
@@ -204,7 +218,10 @@ $(document).ready(function () {
         }
 
         currentPlayer.name = playerName;
-        $('.player-input-form').find('.shootBtn').attr('id', currentPlayer.id);
+        $('.shootBtn').attr('id', currentPlayer.id);
+        $('.chatBtn').attr('id', currentPlayer.id);
+
+        thisPlayer = currentPlayer;
 
         $('.name-input-form').hide();
         $('.player-input-form').show();
@@ -226,18 +243,6 @@ $(document).ready(function () {
             $('#error-message').show();
         }
     });
-
-    // OPTIONAL KEY-PRESS HANDLER INSTEAD OF USING SHOOT BUTTON
-    document.onkeyup = function (event) {
-        let currentInput = event.key.toLowerCase();
-        if (choices.indexOf(currentInput) !== -1 && $('.shootBtn').is(":visible")) {
-            let currentPlayer = identifyPlayer($('.shootBtn').attr('id'));
-            $('#error-message').hide();
-            $('#wait-message').show();
-            $('.player-input-form').hide();
-            updatePlayerChoice(currentPlayer, currentInput);
-        }
-    }
 
     function identifyPlayer(playerID) {
         let playerIdentified;

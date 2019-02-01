@@ -47,8 +47,71 @@ h4 {
     width:100%;
 }
 
+.chatBtn {
+    padding-left: 10px;
+    max-width:23%;
+}
+
 .nextRoundBtn {
     border-width: 0px;
+}
+
+.panel,
+.panel-heading,
+.panel-body,
+.panel-footer {
+    /* border:solid 1px white; */
+}
+
+.panel {
+    width:60%;
+    margin-bottom:10px;
+
+}
+
+.panel-heading {
+    font-weight:bold;
+    background-color: rgba(49,152,185,1);
+    color:white;
+    padding: 0px 10px 0px 10px;
+}
+
+.panel-body {
+    overflow-y: scroll;
+    height: 200px;
+    background-color: white;
+
+}
+
+.panel-footer {
+    background-color: rgba(49,152,185,1);
+}
+
+.chat-input-group {
+    width: 100%;
+    padding: 0px 10px 0px 10px;
+}
+
+.chat-input {
+    width:75% !important;
+}
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
 }
 
 .player-input-form,
