@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
-    let choices = ['r', 'p', 's'];
-    let choicesLong = ['rock', 'paper', 'scissors'];
+    let choices = ['c', 'f', 'n'];
+    let choicesLong = ['cockroach', 'foot', 'nuclear bomb'];
 
     let images = {
-        left: ['assets/images/rps-r-left-210.png', 'assets/images/rps-p-left-210.png', 'assets/images/rps-s-left-210.png'],
-        right: ['assets/images/rps-r-right-210.png', 'assets/images/rps-p-right-210.png', 'assets/images/rps-s-right-210.png']
+        left: ['assets/images/cockroach-left-200.png', 'assets/images/foot-left-200.png', 'assets/images/nuclear-bomb-200.png'],
+        right: ['assets/images/cockroach-right-200.png', 'assets/images/foot-right-200.png', 'assets/images/nuclear-bomb-200.png']
     }
 
     let score = {
@@ -53,10 +53,15 @@ $(document).ready(function () {
     var isConnectedRef = database.ref(".info/connected");
     let newRoundRef = database.ref('/newRound');
 
-    // CREATE HEADER AND ADD IT TO ROW-HEADER
-    let header = $('<h4>');
-    header.text('Rock, Paper, Scissors, Shoot!');
-    $('.row-header').append(header);
+    // // CREATE HEADER AND ADD IT TO ROW-HEADER
+    // let header = $('<h4>');
+    // header.text('Rock, Paper, Scissors, Shoot!');
+    // $('.row-header').append(header);
+
+    // CREATE LOGO AND ADD IT TO ROW-HEADER
+    let logo = $('<img>');
+    logo.attr('src','assets/images/cfn-logo-simple-300.png');
+    $('.row-header').append(logo);
 
     // CREATE NAME-INPUT-FORM AND ADD TO ROW-BUTTONS
     let nameInputForm = $('<form>');
@@ -65,8 +70,9 @@ $(document).ready(function () {
     nameInputForm.attr('class', 'name-input-form form-inline');
     nameInput.attr('type', 'text');
     nameInput.attr('class', 'name-input');
+    nameInput.attr('minlength', '1');
     nameInput.attr('placeholder', 'Enter your name:');
-    nameInput.attr('size', '13');
+    nameInput.attr('size', '14');
     checkInBtn.attr('class', 'checkInBtn');
     checkInBtn.text('Check In');
     nameInputForm.append(nameInput);
@@ -81,8 +87,8 @@ $(document).ready(function () {
     playerInput.attr('type', 'password');
     playerInput.attr('class', 'player-input');
     playerInput.attr('maxlength', '1');
-    playerInput.attr('placeholder', "Enter 'r,' 'p,' or 's'");
-    playerInput.attr('size', '13');
+    playerInput.attr('placeholder', "Enter 'c,' 'f,' or 'n'");
+    playerInput.attr('size', '14');
     shootBtn.attr('class', 'shootBtn');
     shootBtn.text('Shoot!');
     playerInputForm.append(playerInput);
@@ -182,6 +188,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.checkInBtn', function () {
         event.preventDefault();
+
+        $('iframe').hide();
         numCheckedIn++;
         checkInRef.set({
             checkIns: numCheckedIn

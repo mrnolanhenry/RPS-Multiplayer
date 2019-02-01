@@ -1,19 +1,40 @@
 * {
     box-sizing: border-box;
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    color:rgb(0,64,66)
 }
 
 body {
-    background-image: url('../images/bg/gravel.png');
+    background-image: url('../images/bg/flower.jpg');
 }
 
 /* div {
     border: 1px solid black;
 } */
 
+input {
+    color:rgb(0,64,66);
+    border:solid;
+    border-radius: 50px;
+    margin: 5px 0px 5px 0px;
+    border-color: rgba(151,174,218,0.3);
+}
+
+iframe {
+    margin: 10px 0px 10px 0px;
+    border:solid;
+    border-radius: 50px;
+    border-color: rgba(151,174,218,0.3);
+}
+
 button {
-    background-color: rgba(46,179,106,1);
-    color:white;
+    background-color: rgba(243,195,9,1);
+    color:rgb(242,88,34);
+    font-weight: bold;
+    margin: 5px 0px 5px 0px;
+    border:solid;
+    border-radius: 50px;
+    border-color: rgba(151,174,218,0.3);
 }
 
 h4 {
@@ -59,20 +80,39 @@ h4 {
     align-items: right;
 }
 
-.row-hands {
+.row-hands{
     margin-top:15px;
     justify-content:space-between;
 }
 
-.col-message {
+.col-hands {
+    padding: 20px !important;
+}
+
+.row-results {
+    margin-bottom:30px;
+}
+
+*:focus {
+    outline: none;
+    border-color:rgba(243,195,9,1);
+
+}
+
+.row-scoreboard {
+    margin-top:30px;
+}
+
+.col-hands,
+.col-main {
     display: flex;
     flex-direction:column;
     justify-content: space-around;
-    background-color: rgba(46,179,106,0.5);
+    background-color: rgba(151,174,218,0.9);
     /* color:white; */
     border:solid;
     border-radius: 50px;
-    border-color: rgba(46,179,106,0.3);
+    border-color: rgba(151,174,218,0.3);
     z-index:2;
 }
 
